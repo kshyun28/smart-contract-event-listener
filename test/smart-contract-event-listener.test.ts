@@ -1,17 +1,33 @@
-// import * as cdk from 'aws-cdk-lib';
-// import { Template } from 'aws-cdk-lib/assertions';
-// import * as SmartContractEventListener from '../lib/smart-contract-event-listener-stack';
+import * as cdk from 'aws-cdk-lib';
+import { Template } from 'aws-cdk-lib/assertions';
+import * as SmartContractEventListener from '../lib/smart-contract-event-listener-stack';
 
-// example test. To run these tests, uncomment this file along with the
-// example resource in lib/smart-contract-event-listener-stack.ts
-test('SQS Queue Created', () => {
-//   const app = new cdk.App();
-//     // WHEN
-//   const stack = new SmartContractEventListener.SmartContractEventListenerStack(app, 'MyTestStack');
-//     // THEN
-//   const template = Template.fromStack(stack);
+test('VPC Created', () => {
+  const app = new cdk.App();
 
-//   template.hasResourceProperties('AWS::SQS::Queue', {
-//     VisibilityTimeout: 300
-//   });
+  const stack = new SmartContractEventListener.SmartContractEventListenerStack(app, 'MyTestStack');
+
+  const template = Template.fromStack(stack);
+
+  template.resourceCountIs('AWS::EC2::VPC', 1);
+});
+
+test('ECS Task Definition Created', () => {
+  const app = new cdk.App();
+
+  const stack = new SmartContractEventListener.SmartContractEventListenerStack(app, 'MyTestStack');
+
+  const template = Template.fromStack(stack);
+
+  template.resourceCountIs('AWS::ECS::TaskDefinition', 1);
+});
+
+test('ECS Fargate Service Created', () => {
+  const app = new cdk.App();
+
+  const stack = new SmartContractEventListener.SmartContractEventListenerStack(app, 'MyTestStack');
+
+  const template = Template.fromStack(stack);
+
+  template.resourceCountIs('AWS::ECS::Service', 1);
 });
